@@ -124,7 +124,14 @@ impl Downloader {
     pub fn get_filename(&self) -> &str {
         if let Some(pos) = self.uri.replace('\\', "/").rfind(|c| c == '/') {
             if !self.uri[pos + 1..].is_empty() {
-                return &self.uri[pos + 1..];
+                let filename = &self.uri[pos + 1..];
+
+                // Strip query parameters (e.g. `?auth_key=...`)
+                if let Some(query_pos) = filename.find('?') {
+                    return &filename[..query_pos];
+                }
+
+                return filename;
             }
         }
 
