@@ -18,9 +18,9 @@ impl Default for Components {
 
         Self {
             path: launcher_dir.join("components"),
-            servers: vec![
-                String::from("https://github.com/an-anime-team/components")
-            ]
+            // No component servers by default: Wine/DXVK versions come from
+            // the game's own components directory or user-configured sources.
+            servers: vec![]
         }
     }
 }
