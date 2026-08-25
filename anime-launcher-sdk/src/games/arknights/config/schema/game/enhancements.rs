@@ -8,9 +8,6 @@ pub struct Enhancements {
     pub fsr: Fsr,
     pub gamemode: bool,
     pub hud: HUD,
-
-    pub dx12: bool,
-
     pub gamescope: Gamescope
 }
 
@@ -30,10 +27,6 @@ impl From<&JsonValue> for Enhancements {
             hud: value.get("hud")
                 .map(HUD::from)
                 .unwrap_or(default.hud),
-
-            dx12: value.get("dx12")
-                .and_then(JsonValue::as_bool)
-                .unwrap_or(default.dx12),
 
             gamescope: value.get("gamescope")
                 .map(Gamescope::from)
