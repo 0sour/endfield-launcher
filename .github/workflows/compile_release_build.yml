@@ -1,0 +1,41 @@
+name: Compile release build
+
+on:
+  push:
+    tags: [ "[0-9]+.[0-9]+.[0-9]+" ]
+
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:   
+  build_and_upload:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    container:
+      image: ubuntu:devel
+      env:
+        DEBIAN_FRONTEND: noninteractive
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apt update
+          apt install -y build-essential libgtk-4-dev libadwaita-1-dev git curl cmake
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile release build
+        run: cargo build --release --verbose
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Release build
+          path: target/release/sleepy-launcher

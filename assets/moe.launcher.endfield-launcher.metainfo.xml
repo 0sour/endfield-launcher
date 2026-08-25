@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<component type="desktop-application">
+  <id>moe.launcher.endfield-launcher</id>
+  <name>Endfield Launcher</name>
+  <summary>Play Endfield on Linux</summary>
+  <summary xml:lang="de">Spielen Sie Endfield auf Linux</summary>
+  <summary xml:lang="ru">Играйте в Endfield на Linux</summary>
+  <summary xml:lang="es">¡Juega a Endfield en Linux</summary>
+  <summary xml:lang="it">Gioca a Endfield su Linux</summary>
+  <summary xml:lang="hu">Játssz Endfield-t Linux-on</summary>
+  <description>
+    <p>Endfield Launcher is an unofficial launcher for Endfield that handles setting up Wine and installing the game on Linux.</p>
+    <p xml:lang="de">Endfield Launcher ist ein inoffizieller Launcher für Endfield, der die Einrichtung von Wine und die Installation des Spiels unter Linux übernimmt.</p>
+    <p xml:lang="ru">Endfield Launcher - это неофициальный лаунчер для Endfield, который настраивает Wine и устанавливает игру на Linux.</p>
+    <p xml:lang="es">Endfield Launcher es un launcher no oficial para Endfield que se encarga de configurar Wine e instalar el juego en Linux.</p>
+    <p xml:lang="it">Endfield Launcher è un launcher non ufficiale per Endfield che gestisce la configurazione di Wine e l'installazione del gioco su Linux.</p>
+    <p xml:lang="hu">A Endfield Launcher egy nem hivatalos indítóprogram a Endfield játékhoz, amely kezeli a Wine beállítását és a játék telepítését Linuxon.</p>
+  </description>
+  <developer id="moe.launcher">
+    <name>0sour</name>
+  </developer>
+
+  <launchable type="desktop-id">moe.launcher.endfield-launcher.desktop</launchable>
+  <url type="homepage">https://launcher.moe/</url>
+  <url type="donation">https://opencollective.com/dawn-winery</url>
+  <url type="vcs-browser">https://github.com/an-anime-team/sleepy-launcher</url>
+  <url type="bugtracker">https://github.com/an-anime-team/sleepy-launcher/issues</url>
+  <project_license>GPL-3.0-or-later</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <categories>
+    <category>Game</category>
+  </categories>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="0.1.0" date="2026-08-25">
+      <description>
+        <p>Initial release: Endfield CN launcher for Linux</p>
+      </description>
+    </release>
+  </releases>
+  <branding>
+    <color type="primary" scheme_preference="light">#19d1ff</color>
+    <color type="primary" scheme_preference="dark">#0d1b2a</color>
+  </branding>
+</component>

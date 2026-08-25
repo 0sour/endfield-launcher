@@ -1,0 +1,90 @@
+use serde::{Serialize, Deserialize};
+use serde_json::Value as JsonValue;
+
+#[cfg(feature = "sandbox")]
+use crate::config::schema_blanks::sandbox::Sandbox;
+
+#[cfg(feature = "components")]
+use crate::components::{
+    wine::Version as WineVersion,
+    dxvk::Version as DxvkVersion
+};
+
+pub mod launcher;
+pub mod game;
+
+#[cfg(feature = "components")]
+pub mod components;
+
+pub mod prelude {
+    pub use super::launcher::prelude::*;
+    pub use super::game::prelude::*;
+    pub use super::game::*;
+
+    #[cfg(feature = "components")]
+    pub use super::components::*;
+}
+
+use prelude::*;
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Schema {
+    pub launcher: Launcher,
+    pub game: Game,
+
+    #[cfg(feature = "sandbox")]
+    pub sandbox: Sandbox,
+
+    #[cfg(feature = "components")]
+    pub components: Components
+}
+
+impl From<&JsonValue> for Schema {
+    fn from(value: &JsonValue) -> Self {
+        let default = Self::default();
+
+        Self {
+            launcher: match value.get("launcher") {
+                Some(value) => Launcher::from(value),
+                None => default.launcher
+            },
+
+            game: match value.get("game") {
+                Some(value) => Game::from(value),
+                None => default.game
+            },
+
+            #[cfg(feature = "sandbox")]
+            sandbox: match value.get("sandbox") {
+                Some(value) => Sandbox::from(value),
+                None => default.sandbox
+            },
+
+            #[cfg(feature = "components")]
+            components: match value.get("components") {
+                Some(value) => Components::from(value),
+                None => default.components
+            }
+        }
+    }
+}
+
+impl Schema {
+    #[cfg(feature = "components")]
+    /// Get selected wine version
+    pub fn get_selected_wine(&self) -> anyhow::Result<Option<WineVersion>> {
+        match &self.game.wine.selected {
+            Some(selected) => WineVersion::find_in(&self.components.path, selected),
+            None => Ok(None)
+        }
+    }
+
+    #[cfg(feature = "components")]
+    /// Get selected dxvk version
+    pub fn get_selected_dxvk(&self) -> anyhow::Result<Option<DxvkVersion>> {
+        match wincompatlib::dxvk::Dxvk::get_version(&self.game.wine.prefix)? {
+            Some(version) => DxvkVersion::find_in(&self.components.path, version),
+            None => Ok(None)
+        }
+    }
+}

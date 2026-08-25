@@ -1,0 +1,94 @@
+/// Core library version
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+
+lazy_static::lazy_static! {
+    /// Default requests timeout in seconds
+    pub static ref REQUESTS_TIMEOUT: u64 = match std::env::var("LAUNCHER_REQUESTS_TIMEOUT") {
+        Ok(timeout) => timeout.parse().unwrap_or(8),
+        Err(_) => 8
+    };
+}
+
+pub mod version;
+pub mod version_detect;
+pub mod traits;
+pub mod prettify_bytes;
+pub mod check_domain;
+
+#[cfg(feature = "patches")]
+pub mod patches;
+
+// Games-specific functionality
+
+mod games;
+
+pub use minreq;
+
+#[cfg(feature = "sophon")]
+pub use sophon;
+#[cfg(feature = "sophon")]
+pub use sophon::reqwest;
+
+#[cfg(feature = "genshin")]
+pub use games::genshin;
+
+#[cfg(feature = "star-rail")]
+pub use games::star_rail;
+
+#[cfg(feature = "zzz")]
+pub use games::zzz;
+
+#[cfg(feature = "honkai")]
+pub use games::honkai;
+
+#[cfg(feature = "arknights")]
+pub use games::arknights;
+
+#[cfg(feature = "endfield")]
+pub use games::endfield;
+
+// Core functionality
+
+#[cfg(feature = "external")]
+pub mod external;
+
+#[cfg(feature = "install")]
+pub mod installer;
+
+#[cfg(feature = "install")]
+pub mod repairer;
+
+pub mod prelude {
+    pub use super::version::*;
+    pub use super::prettify_bytes::prettify_bytes;
+
+    pub use super::traits::prelude::*;
+
+    #[cfg(feature = "patches")]
+    #[allow(unused_imports)]
+    pub use super::patches::prelude::*;
+
+    #[cfg(feature = "genshin")]
+    pub use super::genshin::prelude as genshin;
+
+    #[cfg(feature = "star-rail")]
+    pub use super::star_rail::prelude as star_rail;
+
+    #[cfg(feature = "zzz")]
+    pub use super::zzz::prelude as zzz;
+
+    #[cfg(feature = "honkai")]
+    pub use super::honkai::prelude as honkai;
+
+    #[cfg(feature = "arknights")]
+    pub use super::arknights::prelude as arknights;
+
+    #[cfg(feature = "endfield")]
+    pub use super::endfield::prelude as endfield;
+
+    #[cfg(feature = "install")]
+    pub use super::installer::prelude::*;
+
+    #[cfg(feature = "install")]
+    pub use super::repairer::*;
+}

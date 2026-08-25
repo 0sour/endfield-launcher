@@ -1,0 +1,64 @@
+[package]
+name = "anime-launcher-sdk"
+version = "1.36.7"
+authors = ["Nikita Podvirnyi <krypt0nn@vk.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+repository = "https://github.com/an-anime-team/anime-launcher-sdk"
+edition = "2021"
+publish = false
+
+[dependencies.anime-game-core]
+#git = "https://github.com/an-anime-team/anime-game-core"
+#tag = "1.39.3"
+path = "../anime-game-core" # ! for dev purposes only
+features = ["all"]
+
+[dependencies]
+anyhow = { version = "1.0", features = ["backtrace"] }
+tracing = "0.1"
+
+serde = { version = "1.0", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }
+
+cached = { version = "0.55", features = ["proc_macro"] }
+enum-ordinalize = { version = "4.3", optional = true }
+
+wincompatlib = { version = "0.7.7", features = ["dxvk"], optional = true }
+lazy_static = { version = "1.5.0", optional = true }
+md-5 = { version = "0.10", features = ["asm"], optional = true }
+
+[features]
+genshin = ["anime-game-core/genshin"]
+star-rail = ["anime-game-core/star-rail"]
+zzz = ["anime-game-core/zzz"]
+honkai = ["anime-game-core/honkai"]
+arknights = ["anime-game-core/arknights"]
+endfield = ["anime-game-core/endfield"]
+
+star-rail-patch = ["anime-game-core/patch-jadeite", "anime-game-core/patch-mfc140"]
+
+# Common features
+states = []
+config = ["dep:serde", "dep:serde_json", "dep:enum-ordinalize"]
+components = ["dep:wincompatlib", "dep:lazy_static"]
+game = ["components", "config"]
+sandbox = []
+sessions = []
+
+# Genshin-specific features
+environment-emulation = []
+fps-unlocker = ["dep:md-5"]
+
+all = [
+    "states",
+    "config",
+    "components",
+    "game",
+    "sandbox",
+    "sessions",
+    "environment-emulation",
+    "fps-unlocker"
+]
+
+default = ["all"]

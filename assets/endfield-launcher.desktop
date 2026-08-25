@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Endfield Launcher
+Icon=icon
+Exec=AppRun
+Type=Application
+Categories=Game
+Terminal=false
+Keywords=endfield;game;launcher

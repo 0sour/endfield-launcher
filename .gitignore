@@ -1,0 +1,10 @@
+/target
+/.direnv
+/data
+
+# 子项目编译产物
+anime-game-core/target
+anime-launcher-sdk/target
+
+flamegraph.svg
+perf.data*
