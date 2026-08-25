@@ -1,84 +1,75 @@
-| Modern style | Classic style |
-| :-: | :-: |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="repository/main-modern-dark.png"><img src="repository/main-modern.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="repository/main-classic-dark.png"><img src="repository/main-classic.png"></picture> |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="repository/settings-modern-dark.png"><img src="repository/settings-modern.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="repository/settings-classic-dark.png"><img src="repository/settings-classic.png"></picture> |
+# Endfield Launcher
 
-<p align="center">
-    <a href="https://discord.gg/ck37X6UWBp">Discord</a> ·
-    <a href="https://github.com/an-anime-team/sleepy-launcher/wiki">Wiki</a>
-</p>
+明日方舟：终末地（国服）Linux 启动器（非官方）
 
-<br>
+基于 [an-anime-team](https://github.com/an-anime-team) 的 sleepy-launcher 模板（relm4 + GTK4）开发，为 Linux 玩家提供终末地 PC 端的安装、更新与启动。
 
-# ♥️ Useful links and thanks
+## ✨ 功能
 
-* [macOS launcher](https://github.com/3Shain/yet-another-anime-game-launcher) which contains some additional compatibility components
-* [Wiki](https://github.com/an-anime-team/sleepy-launcher/wiki) contains some basic FAQ, installation instructions and more
-* [Releases page](https://github.com/an-anime-team/sleepy-launcher/releases) where you can find latest available version
-* [Changelog](CHANGELOG.md) with chronology of the project
+- **国服支持**：官服 / B服 双渠道，一键切换（自动部署渠道 SDK 文件）
+- **游戏安装/更新**：官方 CDN 下载，增量差分（hdiff）更新，AES 加密包自动解密
+- **账号管理**：多账号备份/恢复（sdk_data 目录）
+- **Wine 管理**：Wine/DXVK 版本下载、prefix 创建、组件管理
+- **首次运行向导**：引导配置 Wine、DXVK 与游戏路径
+- **游戏修复**：文件完整性校验与修复
+- **背景图**：从官方 API 获取游戏背景
+- **多语言**：20 种语言（Fluent）
 
-All the project's life happen in our discord server. If you have any questions or want to report an issue - please contact the dev directly there.
+## 📦 安装
 
-<br>
+### Arch Linux（pacman）
 
-# ⬇️ Download
+从 [Releases](https://github.com/0sour/endfield-launcher/releases) 下载 `.pkg.tar.zst` 包：
 
-Launcher developer does not provide any packages for this programm. Instead, we almost fully rely on other people to maintain them.
+```bash
+sudo pacman -U endfield-launcher-*.pkg.tar.zst
+```
 
-To see the installation guides, please visit [this wiki page](https://github.com/an-anime-team/sleepy-launcher/wiki/Installation).
+### 从源码构建
 
-Instructions may be outdated due to lack of interest in maintaining them. You can help the project by keeping documentation up to date if you're interested in it.
+```bash
+git clone https://github.com/0sour/endfield-launcher
+cd endfield-launcher
 
-## 😀 Official support
+# 直接构建
+cargo build --release
 
-These packages are officially supported by the An Anime Team, and we try to ensure that they work for everyone.
+# 或打包（注意：makepkg 需在独立目录运行，避免 src/ 冲突）
+mkdir -p ~/build && cp PKGBUILD ~/build/
+cd ~/build && makepkg -si
+```
 
-| Format | Wiki | Source | Distributions | Maintainer |
-| - | - | - | - | - |
-| Flatpak | [wiki](https://github.com/an-anime-team/sleepy-launcher/wiki/Installation#-any-distribution-flatpak) | [Flathub](https://flathub.org/apps/moe.launcher.sleepy-launcher) | Any (Fedora, Pop!_OS, SteamOS / Steam Deck, etc.) | NelloKudo |
-| RPM | [wiki](https://github.com/an-anime-team/sleepy-launcher/wiki/Installation#-fedora-rpm) | [AAGL](https://build.opensuse.org/repositories/home:Maroxy:AAT-Apps/SL) * | Fedora, OpenSUSE | Maroxy (second discord admin) |
+### 依赖
 
-> [!NOTE]
-> RPM packages are often really outdated. It's not recommended to use them.
+- `gtk4`、`libadwaita`（GUI）
+- `p7zip`（解压加密分卷包）
+- `bubblewrap`（沙箱，可选）
+- `gamemode`、`gamescope`（可选增强）
 
-## 🙂 Community support
+## 🚀 使用
 
-These packages are supported by active members of our community. They're widely used and we keep some level of interactions with their maintainers.
+```bash
+endfield-launcher
+```
 
-| Format | Wiki | Source | Distributions | Maintainer |
-| - | - | - | - | - |
-| AUR | [wiki](https://github.com/an-anime-team/sleepy-launcher/wiki/Installation#-arch-linux-aur) | [sleepy-launcher-bin](https://aur.archlinux.org/packages/sleepy-launcher-bin) | Arch Linux, Manjaro, EndeavourOS | xstra * |
-| NixOS module | [wiki](https://github.com/an-anime-team/sleepy-launcher/wiki/Installation#-nixos-nixpkg) | [aagl-gtk-on-nix](https://github.com/ezKEa/aagl-gtk-on-nix) | NixOS | Luxxy * |
+首次运行会显示配置向导。数据目录：`~/.local/share/endfield-launcher/`
 
-> [!NOTE]
-> Honorary members of our discord server. We have direct contact with them.
+## 🛠️ 技术栈
 
-## 😑 Third party support
+- Rust + [relm4](https://github.com/Relm4/Relm4)（GTK4 声明式 UI）
+- [anime-game-core](https://github.com/an-anime-team/anime-game-core)（游戏核心库，含终末地模块扩展）
+- [anime-launcher-sdk](https://github.com/an-anime-team/anime-launcher-sdk)（启动器 SDK，含终末地模块扩展）
 
-These packages are supported by third party distributors. They either did not contact us, or contact exceptionally rarely. We do not verify state of these packages, and we are not related to their state at all.
+## 🙏 致谢
 
-| Format | Source | Distributions |
-| - | - | - |
-| DEB | [sleepy-launcher](https://launchpad.net/~thundergemios10/+archive/ubuntu/sleepy-launcher) | Ubuntu, Linux Mint, Pop!_OS |
-| Pacstall | [sleepy-launcher-bin](https://pacstall.dev/packages/sleepy-launcher-bin) | Ubuntu |
-| Ebuild | [aagl-ebuilds](https://github.com/an-anime-team/gentoo-ebuilds) * | Gentoo |
-| Lutris | `lutris.net/games/zen...-zero` (stripping the link) | Any |
+- [an-anime-team](https://github.com/an-anime-team) — 模板与核心库
+- [Xel-Launcher](https://github.com/lTinchl/Xel-Launcher) — 国服 API 逆向参考
+- [Hi3Helper.Plugin.Hypergryph](https://github.com/misaka10843/Hi3Helper.Plugin.Hypergryph) — 官方协议参考
 
-> [!NOTE]
-> Although it's hosted in our official repo we didn't contact with its maintainer for some time already, and recent updates were made via merge requests by the community.
+## ⚠️ 声明
 
-## Chinese version support
+本项目为**非官方**启动器，与鹰角网络（Hypergryph）无关。游戏版权归鹰角网络所有。
 
-This should be automatically enabled if you're using `zh_cn` (Chinese) as your system language. If you're not using it - you can change the game edition in the launcher settings.
+## 📄 许可证
 
-The main problem, though, is that github is blocked in China, and it's used in other parts of the launcher - not just in game edition. Notably, you can't use the same components index as other people do.
-
-To fix this, you have to make your own copy of the [components](https://github.com/an-anime-team/components) repository and change all the links there from github releases to some mirror. Later you can update the components index repo link in your launcher's `config.json` file.
-
-If you have any questions - feel free to contact the dev in our discord server (or if you have no way to use discord - try sending me an email, but it's unlikely to be received).
-
-<br>
-
-# 🚧 Project status
-
-This project is in maintenance mode and is considered feature complete. It will continue to receive updates with bugfixes and support for new versions of the game. The various contributors help keep this project alive by keeping it up to date with latest game changes. I'm working on other projects, and the future is in uniting all the launchers in one single [universal launcher](https://github.com/an-anime-team/anime-games-launcher). This project stays in "proof of concept" stage right now and requires major changes, which, again, require interest from my side. Keep your eye on our discord server for more details.
+[GPL-3.0](LICENSE)
