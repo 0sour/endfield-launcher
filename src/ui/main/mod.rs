@@ -11,7 +11,6 @@ mod install_dxvk;
 mod create_prefix;
 mod download_diff;
 mod migrate_folder;
-mod disable_telemetry;
 mod launch;
 mod import_game;
 
@@ -427,7 +426,6 @@ impl SimpleComponent for App {
                                                     Some(LauncherState::GameUpdateAvailable(_)) |
                                                     Some(LauncherState::GameNotInstalled(_)) => "document-save-symbolic",
 
-                                                    Some(LauncherState::TelemetryNotDisabled) => "security-high-symbolic",
 
                                                     Some(LauncherState::GameOutdated(_)) |
                                                     None => "window-close-symbolic"
@@ -439,7 +437,6 @@ impl SimpleComponent for App {
                                                     Some(LauncherState::PredownloadAvailable { .. }) => tr!("launch"),
 
                                                     Some(LauncherState::FolderMigrationRequired { .. }) => tr!("migrate-folders"),
-                                                    Some(LauncherState::TelemetryNotDisabled) => tr!("disable-telemetry"),
 
                                                     Some(LauncherState::WineNotInstalled) => tr!("download-wine"),
                                                     Some(LauncherState::PrefixNotExists)  => tr!("create-prefix"),
@@ -1318,10 +1315,6 @@ impl SimpleComponent for App {
                         to.to_owned(),
                         cleanup_folder.to_owned()
                     ),
-
-                    LauncherState::TelemetryNotDisabled => {
-                        disable_telemetry::disable_telemetry(sender)
-                    }
 
                     LauncherState::WineNotInstalled => {
                         download_wine::download_wine(sender, self.progress_bar.sender().to_owned())

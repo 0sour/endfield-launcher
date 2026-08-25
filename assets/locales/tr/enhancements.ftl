@@ -34,8 +34,6 @@ performance = Performans
 gamemode = Oyun modu
 gamemode-description = Oyunun işlem önceliğini arttırarak performansı arttırır
 
-launch-with-dx12 = Launch with DX12
-launch-with-dx12-description = Run the game with the DX12 renderer
 
 gamescope = Gamescope
 gamescope-description = Gamescope, oyunları izole edilmiş bir Xwayland içinde açmanıza yarayan Valve tarafından geliştirilmiş araçtır.

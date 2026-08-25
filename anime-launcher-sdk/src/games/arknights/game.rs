@@ -5,7 +5,6 @@ use std::fs::File;
 use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use anime_game_core::arknights::telemetry;
 use crate::config::ConfigExt;
 use crate::arknights::config::Config;
 
@@ -69,21 +68,6 @@ pub fn run() -> anyhow::Result<bool> {
         temp: config.launcher.temp.clone().unwrap_or(std::env::temp_dir())
     };
 
-    // Check telemetry servers (skipped when the user opted out of
-    // automatic telemetry disabling)
-
-    if config.launcher.disable_telemetry {
-        tracing::info!("Checking telemetry");
-
-        if let Ok(Some(server)) = telemetry::is_disabled(config.launcher.edition) {
-            return Err(anyhow::anyhow!("Telemetry server is not disabled: {server}"));
-        }
-    }
-
-    else {
-        tracing::info!("Telemetry check is disabled in the launcher settings");
-    }
-
     // Prepare wine prefix drives
     config.game.wine.drives.map_folders(&folders.game, &config.game.wine.prefix)?;
 
@@ -117,10 +101,6 @@ pub fn run() -> anyhow::Result<bool> {
     }
 
     windows_command += "Arknights.exe ";
-
-    if config.game.enhancements.dx12 {
-        launch_args += "-use-d3d12 ";
-    }
 
     if config.game.wine.borderless {
         launch_args += "-screen-fullscreen 0 -popupwindow ";
@@ -213,12 +193,6 @@ pub fn run() -> anyhow::Result<bool> {
     command.envs(config.game.wine.sync.get_env_vars());
     command.envs(config.game.wine.language.get_env_vars());
     command.envs(config.game.wine.shared_libraries.get_env_vars(wine_folder));
-
-    // enable dxvk-nvapi when launching in DX12 mode
-    // https://github.com/jp7677/dxvk-nvapi/blob/bfd44821a77fc591635ae0e56c0b0e49cb26d3a5/README.md#wine--wine-staging
-    if config.game.enhancements.dx12 {
-        command.env("DXVK_ENABLE_NVAPI", "1");
-    }
 
     if config.game.wine.timeout_fix {
         command.env("WINE_ENABLE_TIMEOUT_FIX", "1");

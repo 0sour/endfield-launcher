@@ -34,8 +34,6 @@ performance = Výkon
 gamemode = Herní režim
 gamemode-description = Nastaví hře vyšší prioritu než zbytek procesů
 
-launch-with-dx12 = Launch with DX12
-launch-with-dx12-description = Run the game with the DX12 renderer
 
 gamescope = Gamescope
 gamescope-description = Gamescope je nástroj od firmy Valve který umožňuje hře běžet v izolované instanci Xwayland, podporuje GPU od AMD, Intel, a Nvidia

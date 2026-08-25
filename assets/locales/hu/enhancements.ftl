@@ -34,8 +34,6 @@ performance = Teljesítmény
 gamemode = Gamemode
 gamemode-description = Minden folyamat felett fusson a játék ( prioritás minden felett)
 
-launch-with-dx12 = Launch with DX12
-launch-with-dx12-description = Run the game with the DX12 renderer
 
 gamescope = Gamescope
 gamescope-description = A Gamescope-al egy külön Xwayland folyamatban fut a játék. Támogatja az Intel, AMD és Nvidia videókártyákat

@@ -59,29 +59,6 @@ impl SimpleAsyncComponent for EnhancementsApp {
             set_icon_name: Some("applications-graphics-symbolic"),
 
             add = &adw::PreferencesGroup {
-                adw::ActionRow {
-                    set_title: &tr!("launch-with-dx12"),
-                    set_subtitle: &tr!("launch-with-dx12-description"),
-
-                    add_suffix = &gtk::Switch {
-                        set_valign: gtk::Align::Center,
-
-                        set_active: CONFIG.game.enhancements.dx12,
-
-                        connect_state_notify => |switch| {
-                            if is_ready() {
-                                if let Ok(mut config) = Config::get() {
-                                    config.game.enhancements.dx12 = switch.is_active();
-
-                                    Config::update(config);
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-
-            add = &adw::PreferencesGroup {
                 set_title: &tr!("options"),
 
                 adw::ActionRow {

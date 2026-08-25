@@ -34,8 +34,6 @@ performance = Скорость
 gamemode = Gamemode
 gamemode-description = Выделять игре приоритет перед остальными процессами
 
-launch-with-dx12 = Launch with DX12
-launch-with-dx12-description = Run the game with the DX12 renderer
 
 gamescope = Gamescope
 gamescope-description = Программа от Valve, позволяющая запускать игры в изолированном окружении Xwayland и поддерживает видеокарты от AMD, Intel, и Nvidia

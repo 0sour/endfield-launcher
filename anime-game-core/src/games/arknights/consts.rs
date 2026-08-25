@@ -95,15 +95,6 @@ impl GameEdition {
         "Arknights.exe"
     }
 
-    /// Telemetry servers to block (to be verified)
-    #[inline]
-    pub fn telemetry_servers(&self) -> &[&str] {
-        &[
-            concat!("log-upload.", "hypergryph", ".com"),
-            concat!("uspider.", "yuanshen", ".com")
-        ]
-    }
-
     pub fn from_system_lang() -> Self {
         let locale = std::env::var("LC_ALL")
             .unwrap_or_else(|_| {

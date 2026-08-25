@@ -34,8 +34,6 @@ performance = 性能优先
 gamemode = 游戏模式
 gamemode-description = 提升游戏相对其他程序的优先级
 
-launch-with-dx12 = Launch with DX12
-launch-with-dx12-description = Run the game with the DX12 renderer
 
 gamescope = Gamescope
 gamescope-description = Gamescope 是 Valve 开发的工具，可以让游戏运行在一个单独的 Xwayland 实例上。支持 AMD，英特尔和 Nvidia 的显卡

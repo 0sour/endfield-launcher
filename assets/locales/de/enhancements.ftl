@@ -34,8 +34,6 @@ performance = Leistung
 gamemode = Gamemode
 gamemode-description = Dem Spiel den Vorrang vor den übrigen Prozessen geben
 
-launch-with-dx12 = Launch with DX12
-launch-with-dx12-description = Run the game with the DX12 renderer
 
 gamescope = Gamescope
 gamescope-description = Gamescope ist ein Tool von Valve, das es ermöglicht, Spiele in einer isolierten Xwayland-Instanz laufen zu lassen und unterstützt AMD-, Intel- und Nvidia-GPUs

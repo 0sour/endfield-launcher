@@ -54,8 +54,6 @@ pub struct Launcher {
     pub background_index: u8,
     pub temp: Option<PathBuf>,
     pub repairer: Repairer,
-
-    pub disable_telemetry: bool,    
     pub behavior: LauncherBehavior
 }
 
@@ -75,7 +73,6 @@ impl Default for Launcher {
             discord_rpc: DiscordRpc::default(),
 
 
-            disable_telemetry: true,
 
             behavior: LauncherBehavior::default()
         }
@@ -132,10 +129,6 @@ impl From<&JsonValue> for Launcher {
             },
 
 
-            disable_telemetry: match value.get("disable_telemetry") {
-                Some(value) => serde_json::from_value(value.clone()).unwrap_or(default.disable_telemetry),
-                None => default.disable_telemetry
-            },
 
             behavior: match value.get("behavior") {
                 Some(value) => serde_json::from_value(value.clone()).unwrap_or(default.behavior),
