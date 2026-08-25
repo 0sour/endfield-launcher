@@ -100,7 +100,7 @@ pub fn run() -> anyhow::Result<bool> {
         windows_command += " ";
     }
 
-    windows_command += "Arknights.exe ";
+    windows_command += "Endfield.exe ";
 
     if config.game.wine.borderless {
         launch_args += "-screen-fullscreen 0 -popupwindow ";
@@ -327,7 +327,7 @@ pub fn run() -> anyhow::Result<bool> {
         let output = Command::new("ps").arg("-A").stdout(Stdio::piped()).output()?;
         let output = String::from_utf8_lossy(&output.stdout);
 
-        if !output.contains("Arknights") {
+        if !output.contains("Endfield") {
             break;
         }
     }
