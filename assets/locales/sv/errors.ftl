@@ -44,9 +44,7 @@ patch-sync-failed = Det gick inte att synka patch-mappen
 patch-state-check-failed = Det gick inte att kontrollera patch-mappens tillstånd
 game-patching-error = Det gick inte att patcha spelet
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Det gick inte att inaktivera telemetriservrar
 
 # Sandbox
 

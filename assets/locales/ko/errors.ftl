@@ -44,9 +44,7 @@ patch-sync-failed = 패치 폴더 동기화에 실패했습니다
 patch-state-check-failed = 패치 폴더 상태 확인에 실패했습니다
 game-patching-error = 게임 패치에 실패했습니다
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Telemetry 서버를 비활성화하지 못했습니다
 
 # Sandbox
 

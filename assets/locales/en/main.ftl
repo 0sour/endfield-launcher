@@ -58,7 +58,6 @@ launch = Launch
 migrate-folders = Migrate folders
 migrate-folders-tooltip = Update game folders structure
 apply-patch = Apply patch
-disable-telemetry = Disable telemetry
 download-wine = Download wine
 create-prefix = Create prefix
 install-dxvk = Install DXVK

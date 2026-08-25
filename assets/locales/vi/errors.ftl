@@ -48,9 +48,7 @@ game-patching-error = Không thể vá trò chơi
 
 main-patch-update-failed = Không thể tải bản vá mới nhất
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Không thể tắt telemetry servers
 
 # Sandbox
 

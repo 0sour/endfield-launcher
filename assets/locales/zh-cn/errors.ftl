@@ -44,9 +44,7 @@ patch-sync-failed = 同步补丁文件夹失败
 patch-state-check-failed = 检查补丁文件夹失败
 game-patching-error = 应用游戏补丁失败
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = 监测服务器禁用失败
 
 # Sandbox
 

@@ -44,9 +44,7 @@ patch-sync-failed = Impossible de synchroniser le patch
 patch-state-check-failed = Impossible de déterminer l'état du patch
 game-patching-error = Le patch du jeu a échoué
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Failed to disable telemetry servers
 
 # Sandbox
 

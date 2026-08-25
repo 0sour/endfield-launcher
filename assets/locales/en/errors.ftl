@@ -44,9 +44,7 @@ patch-sync-failed = Failed to sync patch folder
 patch-state-check-failed = Failed to check patch folder state
 game-patching-error = Failed to patch game
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Failed to disable telemetry servers
 
 # Sandbox
 

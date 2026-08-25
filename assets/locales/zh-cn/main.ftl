@@ -58,7 +58,6 @@ launch = 启动
 migrate-folders = 迁移目录
 migrate-folders-tooltip = 更新游戏目录结构
 apply-patch = 安装补丁
-disable-telemetry = 禁用监测
 download-wine = 下载 Wine
 create-prefix = 创建 Wine prefix
 update = 更新

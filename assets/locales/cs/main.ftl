@@ -58,7 +58,6 @@ launch = Hrát
 migrate-folders = Přemístit složky
 migrate-folders-tooltip = Aktualizovat strukturu složek hry
 apply-patch = Aplikovat patch
-disable-telemetry = Vypnout telemetrii
 download-wine = Stáhnout Wine
 create-prefix = Vytvořit Wine prefix
 update = Aktualizovat

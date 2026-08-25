@@ -58,7 +58,6 @@ launch = Khởi chạy
 migrate-folders = Di chuyển các thư mục
 migrate-folders-tooltip = Cập nhật cấu trúc thư mục trò chơi
 apply-patch = Áp dụng bản vá
-disable-telemetry = Vô hiệu hóa telemetry
 download-wine = Tải xuống Wine
 create-prefix = Tạo tiền tố
 update = Cập nhật

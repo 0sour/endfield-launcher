@@ -66,7 +66,6 @@ launch = Çalıştır
 migrate-folders = Dosyaları aktar
 migrate-folders-tooltip = Oyun dosyaları yapısını güncelle
 apply-patch = Yamayı uygula
-disable-telemetry = Bilgi toplamayı devre dışı bırak
 download-wine = Wine indir
 create-prefix = Prefix oluştur
 update = Güncelle

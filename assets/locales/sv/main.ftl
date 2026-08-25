@@ -58,7 +58,6 @@ launch = Starta
 migrate-folders = Migrera mappar
 migrate-folders-tooltip = Uppdatera spelets mappstruktur
 apply-patch = Applicera patch
-disable-telemetry = Inaktivera telemetri
 download-wine = Ladda ner Wine
 create-prefix = Skapa prefix
 update = Uppdatering

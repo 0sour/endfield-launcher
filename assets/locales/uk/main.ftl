@@ -69,7 +69,6 @@ launch = Запустити
 migrate-folders = Перемістити папки
 migrate-folders-tooltip = Оновити структуру файлів гри
 apply-patch = Застосувати патч
-disable-telemetry = Вимкнути телеметрію
 download-wine = Встановити Wine
 create-prefix = Створити префікс
 update = Оновити

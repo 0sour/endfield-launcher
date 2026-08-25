@@ -65,7 +65,6 @@ launch = Luncurkan
 migrate-folders = Pindahkan folder 
 migrate-folders-tooltip = Perbarui struktur folder game 
 apply-patch = Terapkan patch
-disable-telemetry = Nonaktifkan telemetri
 download-wine = Unduh wine
 create-prefix = Buat prefix
 update = Perbarui

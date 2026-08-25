@@ -58,7 +58,6 @@ launch = Start
 migrate-folders = Migreer mappen
 migrate-folders-tooltip = Update de structuur van spelmappen
 apply-patch = Pas patch toe
-disable-telemetry = Schakel telemetrie uit
 download-wine = Download Wine
 create-prefix = Creër prefix
 update = Update

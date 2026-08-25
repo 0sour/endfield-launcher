@@ -44,9 +44,7 @@ patch-sync-failed = Помилка синхронізації папки пат�
 patch-state-check-failed = Помилка перевірки статусу папки патча
 game-patching-error = Не вдалося встановити патч гри
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Не вдалося відключити сервери телеметрії
 
 # Sandbox
 

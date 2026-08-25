@@ -44,9 +44,7 @@ patch-sync-failed = Gagal mensinkronisasi folder patch
 patch-state-check-failed = Gagal mengecek kondisi folder patch
 game-patching-error = Gagal melakukan patch pada game
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Gagal menonaktifkan server telemetri
 
 # Sandbox
 

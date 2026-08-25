@@ -44,9 +44,7 @@ patch-sync-failed = Synchronizace složky patchů se nezdařila
 patch-state-check-failed = Nepodařilo se zkontrolovat stav složky patchů
 game-patching-error = Nepodařilo se patchnout hru
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Nepodařilo se vypnout servery s telemetrií
 
 # Sandbox
 

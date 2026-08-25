@@ -44,9 +44,7 @@ patch-sync-failed = Kan de patchmap niet synchroniseren
 patch-state-check-failed = Kan de status van de patchmap niet controleren
 game-patching-error = Kan het spel niet patchen
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Kan telemetrieservers niet uitschakelen
 
 # Sandbox
 

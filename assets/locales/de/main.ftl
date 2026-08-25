@@ -58,7 +58,6 @@ launch = Starten
 migrate-folders = Ordner migrieren
 migrate-folders-tooltip = Spielordnerstruktur aktualisieren
 apply-patch = Patch anwenden
-disable-telemetry = Blockiere Telemetrie
 download-wine = Wine Herunterladen
 create-prefix = Prefix erstellen
 update = Updaten

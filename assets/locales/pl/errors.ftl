@@ -44,9 +44,7 @@ patch-sync-failed = Nie udało się zsynchronizować folderu z łatkami
 patch-state-check-failed = Nie udało się sprawdzić stanu folderu z łatkami
 game-patching-error = Wprowadzanie łatki do gry nie powiodło się
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = Wyłączanie serwerów telemetrii nie powiodło się
 
 # Sandbox
 

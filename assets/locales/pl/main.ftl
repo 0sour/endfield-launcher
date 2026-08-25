@@ -56,7 +56,6 @@ launch = Uruchom
 migrate-folders = Migruj foldery
 migrate-folders-tooltip = Zaktualizuj strukturę folderów gry
 apply-patch = Zastosuj łatkę
-disable-telemetry = Wyłącz telemetrię
 download-wine = Pobierz Wine
 create-prefix = Utwórz przedrostek
 update = Aktualizuj

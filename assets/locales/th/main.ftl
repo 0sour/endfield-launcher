@@ -58,7 +58,6 @@ launch = เริ่มเกมส์
 migrate-folders = ย้ายโฟลเดอร์
 migrate-folders-tooltip = อัพเดตโครงสร้างโฟลเดอร์เกม
 apply-patch = ติดตั้งแพทช์
-disable-telemetry = ปิดใช้งานการวัดและส่งข้อมูล
 download-wine = ดาวน์โหลด Wine
 create-prefix = สร้างการตั้งค่า Wine
 update = อัปเดต

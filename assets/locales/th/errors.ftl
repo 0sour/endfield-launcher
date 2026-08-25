@@ -44,9 +44,7 @@ patch-sync-failed = ไม่สามารถซิงค์โฟลเดอ
 patch-state-check-failed = ไม่สามารถตรวจสอบสถานะโฟลเดอร์แพตช์ได้
 game-patching-error = ไม่สามารถแพตช์เกมได้
 
-# Disable telemetry
 
-telemetry-servers-disabling-error = ไม่สามารถปิดใช้งานเซิร์ฟเวอร์การวัดและส่งข้อมูล
 
 # Sandbox
 

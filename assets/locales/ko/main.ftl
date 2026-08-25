@@ -58,7 +58,6 @@ launch = 실행
 migrate-folders = 폴더 마이그레이션
 migrate-folders-tooltip = 게임 폴더 구조 변경
 apply-patch = 패치 적용
-disable-telemetry = 원격 측정 비활성화
 download-wine = Wine 다운로드
 create-prefix = Prefix 생성
 update = 업데이트

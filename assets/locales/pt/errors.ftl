@@ -46,7 +46,6 @@ game-patching-error = Falha ao patchear jogo
 
 # Desativar telemetria
 
-telemetry-servers-disabling-error = Falha ao desativar os servidores de telemetria
 
 # Sandbox
 
