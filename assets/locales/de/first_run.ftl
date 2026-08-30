@@ -1,7 +1,7 @@
 welcome = Willkommen
 
 welcome-page-message =
-    Hallo! Willkommen bei Sleepy Launcher
+    Hallo! Willkommen bei Endfield Launcher
 
     Wir müssen einige Dinge vorbereiten und Standardkomponenten herunterladen, bevor Sie das Spiel starten können
 

@@ -23,8 +23,8 @@
   <launchable type="desktop-id">moe.launcher.endfield-launcher.desktop</launchable>
   <url type="homepage">https://launcher.moe/</url>
   <url type="donation">https://opencollective.com/dawn-winery</url>
-  <url type="vcs-browser">https://github.com/an-anime-team/sleepy-launcher</url>
-  <url type="bugtracker">https://github.com/an-anime-team/sleepy-launcher/issues</url>
+  <url type="vcs-browser">https://github.com/0sour/endfield-launcher</url>
+  <url type="bugtracker">https://github.com/0sour/endfield-launcher/issues</url>
   <project_license>GPL-3.0-or-later</project_license>
   <metadata_license>CC0-1.0</metadata_license>
   <categories>

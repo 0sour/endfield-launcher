@@ -14,7 +14,7 @@ game-folder = ゲームフォルダ
 config-file = 設定ファイル
 debug-file = デバッグファイル
 signal-search-url = Open singal searches
-about = "Sleepy Launcher"について 
+about = "Endfield Launcher"について 
 
 
 close = { $form ->

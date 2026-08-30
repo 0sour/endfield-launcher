@@ -33,7 +33,7 @@ impl SimpleAsyncComponent for WelcomeApp {
                 },
 
                 gtk::Label {
-                    set_label: "Sleepy Launcher",
+                    set_label: "Endfield Launcher",
                     set_margin_top: 32,
                     add_css_class: "title-1"
                 },

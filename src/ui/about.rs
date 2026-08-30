@@ -34,8 +34,8 @@ impl SimpleComponent for AboutDialog {
             set_application_name: "Endfield Launcher",
             set_application_icon: APP_ID,
 
-            set_website: "https://github.com/an-anime-team/endfield-launcher",
-            set_issue_url: "https://github.com/an-anime-team/endfield-launcher/issues",
+            set_website: "https://github.com/0sour/endfield-launcher",
+            set_issue_url: "https://github.com/0sour/endfield-launcher/issues",
 
             set_license_type: gtk::License::Gpl30Only,
             set_version: &APP_VERSION,

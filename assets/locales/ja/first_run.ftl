@@ -1,7 +1,7 @@
 welcome = ようこそ
 
 welcome-page-message =
-    やぁ！Sleepy Launcherへようこそ！
+    やぁ！Endfield Launcherへようこそ！
 
     ゲームを実行する前に、いくつかのコンポーネントをダウンロードする必要があります！
 

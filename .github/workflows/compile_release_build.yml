@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Release build
-          path: target/release/sleepy-launcher
+          path: target/release/endfield-launcher

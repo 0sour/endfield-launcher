@@ -311,23 +311,62 @@ impl SimpleAsyncComponent for DownloadComponentsApp {
                 let config = Config::get().unwrap_or_else(|_| CONFIG.clone());
 
                 // 4 latest versions of 4 first available wine group
-                self.wine_versions = wine::get_groups(&config.components.path).unwrap()
-                    .into_iter()
-                    .take(4)
-                    .flat_map(|group| group.versions.into_iter().take(4))
-                    .collect();
+                match wine::get_groups(&config.components.path) {
+                    Ok(groups) => {
+                        self.wine_versions = groups
+                            .into_iter()
+                            .take(4)
+                            .flat_map(|group| group.versions.into_iter().take(4))
+                            .collect();
+                    }
+
+                    Err(err) => {
+                        tracing::error!("Failed to get wine versions: {err}");
+
+                        sender.output(Self::Output::Toast {
+                            title: tr!("components-index-sync-failed"),
+                            description: Some(err.to_string())
+                        });
+                    }
+                }
 
                 // 4 latest versions of 4 first available dxvk group
-                self.dxvk_versions = dxvk::get_groups(&config.components.path).unwrap()
-                    .into_iter()
-                    .take(4)
-                    .flat_map(|group| group.versions.into_iter().take(4))
-                    .collect();
+                match dxvk::get_groups(&config.components.path) {
+                    Ok(groups) => {
+                        self.dxvk_versions = groups
+                            .into_iter()
+                            .take(4)
+                            .flat_map(|group| group.versions.into_iter().take(4))
+                            .collect();
+                    }
+
+                    Err(err) => {
+                        tracing::error!("Failed to get dxvk versions: {err}");
+
+                        sender.output(Self::Output::Toast {
+                            title: tr!("components-index-sync-failed"),
+                            description: Some(err.to_string())
+                        });
+                    }
+                }
             }
 
             #[allow(unused_must_use)]
             DownloadComponentsAppMsg::DownloadWine => {
                 let config = Config::get().unwrap_or_else(|_| CONFIG.clone());
+
+                // Guard against empty version lists (e.g. when the components
+                // index failed to sync) to avoid panicking on indexing
+                if self.wine_versions.is_empty() || self.dxvk_versions.is_empty() {
+                    tracing::error!("Cannot download components: version lists are empty");
+
+                    sender.output(Self::Output::Toast {
+                        title: tr!("components-index-sync-failed"),
+                        description: None
+                    });
+
+                    return;
+                }
 
                 self.selected_wine = Some(self.wine_versions[self.wine_combo.selected() as usize].clone());
                 self.selected_dxvk = Some(self.dxvk_versions[self.dxvk_combo.selected() as usize].clone());

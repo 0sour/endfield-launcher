@@ -3,10 +3,11 @@ name = "endfield-launcher"
 version = "0.1.0"
 description = "Arknights: Endfield launcher for Linux"
 authors = [
+    "0sour <0sour@users.noreply.github.com>",
     "Nikita Podvirnyi <krypt0nn@vk.com>"
 ]
-homepage = "https://github.com/an-anime-team/sleepy-launcher"
-repository = "https://github.com/an-anime-team/sleepy-launcher"
+homepage = "https://github.com/0sour/endfield-launcher"
+repository = "https://github.com/0sour/endfield-launcher"
 license = "GPL-3.0"
 edition = "2021"
 build = "build.rs"
