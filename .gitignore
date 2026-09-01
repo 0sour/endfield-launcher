@@ -6,5 +6,8 @@
 anime-game-core/target
 anime-launcher-sdk/target
 
+# 参考项目（浅克隆，含嵌套 .git）
+/参考
+
 flamegraph.svg
 perf.data*
