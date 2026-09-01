@@ -7,10 +7,24 @@ use super::consts::GameEdition;
 /// Request the latest game info from the Hypergryph launcher API
 ///
 /// Uses the `batch_proxy` endpoint with the `get_latest_game` kind.
-/// The result is cached per edition.
-#[cached(key = "GameEdition", convert = r#"{ game_edition }"#, result)]
-pub fn request(game_edition: GameEdition) -> anyhow::Result<schema::GetLatestGameRsp> {
-    tracing::trace!("Requesting latest game info for {game_edition:?}");
+/// The result is cached per edition and requested version.
+///
+/// The `version` parameter is important: the API only returns the
+/// `pre_patch` (predownload) section when the client reports the currently
+/// installed version. With an empty version only the live release info is
+/// returned, so the launcher would never know about available predownloads.
+#[cached(
+    key = "(GameEdition, String)",
+    convert = r#"{ (game_edition, version.clone()) }"#,
+    result
+)]
+pub fn request(
+    game_edition: GameEdition,
+    version: String
+) -> anyhow::Result<schema::GetLatestGameRsp> {
+    tracing::trace!(
+        "Requesting latest game info for {game_edition:?}, local version: {version}"
+    );
 
     let body = schema::BatchRequest {
         seq: game_edition.seq().to_string(),
@@ -21,7 +35,7 @@ pub fn request(game_edition: GameEdition) -> anyhow::Result<schema::GetLatestGam
                 launcher_app_code: game_edition.launcher_app_code().to_string(),
                 channel: game_edition.channel().to_string(),
                 sub_channel: game_edition.sub_channel().to_string(),
-                version: String::new()
+                version
             })
         }]
     };

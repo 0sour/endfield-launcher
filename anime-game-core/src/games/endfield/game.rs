@@ -71,7 +71,9 @@ impl GameExt for Game {
     fn get_latest_version(edition: GameEdition) -> anyhow::Result<Version> {
         tracing::trace!("Trying to get latest game version");
 
-        let response = api::request(edition)?;
+        // Empty version is fine here: the latest release version is
+        // returned regardless of the requested version
+        let response = api::request(edition, String::new())?;
 
         let version = response
             .version
@@ -111,7 +113,21 @@ impl Game {
     pub fn try_get_diff(&self) -> anyhow::Result<VersionDiff> {
         tracing::debug!("Trying to find version diff for the game");
 
-        let response = api::request(self.edition)?;
+        // Report the currently installed version so that the API can
+        // return the predownload (`pre_patch`), which it only does when
+        // the client's version matches the latest live release. Uninstalled
+        // games don't need it, and a broken installation reports an error
+        // below as before
+        let requested_version = if self.is_installed() {
+            self.get_version()
+                .map(|version| version.to_string())
+                .unwrap_or_default()
+        }
+        else {
+            String::new()
+        };
+
+        let response = api::request(self.edition, requested_version)?;
 
         let latest_version = response
             .version

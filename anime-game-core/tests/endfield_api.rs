@@ -5,7 +5,7 @@ use anime_game_core::endfield::consts::GameEdition;
 #[test]
 #[ignore = "requires network access"]
 fn request_latest_game_info() {
-    let response = api::request(GameEdition::Official).expect("API request failed");
+    let response = api::request(GameEdition::Official, String::new()).expect("API request failed");
 
     let version = response.version.expect("no version");
     println!("终末地官服最新版本: {version}");

@@ -9,7 +9,9 @@ use crate::repairer::IntegrityFile;
 
 /// Get the resource base URL from the API response
 fn get_resource_base_url(game_edition: GameEdition) -> anyhow::Result<String> {
-    let response = api::request(game_edition)?;
+    // Empty version is fine here: the resource base URL is the same
+    // regardless of the requested version
+    let response = api::request(game_edition, String::new())?;
 
     response
         .pkg
