@@ -96,6 +96,7 @@ impl GameExt for Game {
             return Ok(stored_version);
         }
 
+        #[cfg(feature = "install")]
         if let Some(game_scan_version) = crate::version_detect::get_version_game_scan(
             self.path.join(self.edition.exe_name()).as_ref(),
             self.edition.game_scan_url(),
@@ -108,6 +109,7 @@ impl GameExt for Game {
             return Ok(game_scan_version);
         }
 
+        #[cfg(feature = "install")]
         if let Some(sophon_version) = crate::version_detect::get_version_sophon(
             self.path.join(self.edition.exe_name()).as_ref(),
             self.edition.game_id(),

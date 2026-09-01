@@ -4,6 +4,20 @@ use std::fs::File;
 use std::path::Path;
 
 use anyhow::Context;
+
+// The `md-5` crate is an optional dependency and is only enabled by the
+// `install` feature (see Cargo.toml), so everything that uses it below is
+// gated on the game features that call it *and* on `install`
+#[cfg(all(
+    any(
+        feature = "genshin",
+        feature = "star-rail",
+        feature = "honkai",
+        feature = "zzz",
+        feature = "sophon"
+    ),
+    feature = "install"
+))]
 use md5::{Digest, Md5};
 
 use crate::version::Version;
@@ -117,6 +131,18 @@ pub fn get_version_from_game_files<const OFFSET: u64, const REGION_SIZE: usize>(
     Ok(None)
 }
 
+// See the `use md5` statement above: it's only compiled when the
+// `install` feature (which enables the md-5 dependency) is active
+#[cfg(all(
+    any(
+        feature = "genshin",
+        feature = "star-rail",
+        feature = "honkai",
+        feature = "zzz",
+        feature = "sophon"
+    ),
+    feature = "install"
+))]
 fn file_md5(path: &Path) -> std::io::Result<String> {
     let mut file = BufReader::new(File::open(path)?);
     let mut md5 = Md5::new();
@@ -126,6 +152,15 @@ fn file_md5(path: &Path) -> std::io::Result<String> {
     Ok(format!("{:x}", md5.finalize()))
 }
 
+#[cfg(all(
+    any(
+        feature = "genshin",
+        feature = "star-rail",
+        feature = "honkai",
+        feature = "zzz"
+    ),
+    feature = "install"
+))]
 pub fn get_version_game_scan(
     exe_path: &Path,
     scan_url: &str,
@@ -177,7 +212,7 @@ pub fn get_version_game_scan(
         }))
 }
 
-#[cfg(feature = "sophon")]
+#[cfg(all(feature = "sophon", feature = "install"))]
 pub fn get_version_sophon(
     exe_path: &Path,
     game_id: &str,
