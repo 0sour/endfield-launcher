@@ -223,6 +223,114 @@ impl VersionDiffExt for VersionDiff {
     type Error = DiffDownloadingError;
     type Update = DiffUpdate;
 
+    /// Check whether all segments of the diff are already downloaded
+    /// into the given folder
+    #[cfg(feature = "install")]
+    fn is_downloaded(&self, folder: impl AsRef<Path>) -> bool {
+        let uris = match self {
+            // Can't be downloaded at all
+            Self::Latest { .. } | Self::Outdated { .. } => return false,
+
+            // Can be downloaded
+            Self::Predownload { uris, .. } | Self::Diff { uris, .. } => uris,
+
+            // Can be installed but requires install_to logic
+            Self::NotInstalled {
+                ..
+            } => return false
+        };
+
+        uris.iter().all(|uri| {
+            let filename = Downloader::new(uri)
+                .map(|downloader| downloader.get_filename().to_string())
+                .unwrap_or_default();
+
+            folder.as_ref().join(filename).exists()
+        })
+    }
+
+    /// Download all segments of the diff into the given folder
+    ///
+    /// Endfield distributes its updates as multiple ZIP volumes
+    /// (e.g. `.zip.001` ... `.zip.NNN`), so `download_as` (which the
+    /// default `download_to` delegates to) would only get the first one.
+    #[cfg(feature = "install")]
+    fn download_to(
+        &mut self,
+        folder: impl AsRef<Path>,
+        progress: impl Fn(u64, u64) + Send + 'static
+    ) -> Result<(), Self::Error> {
+        tracing::debug!("Downloading version difference segments");
+
+        // Already fully downloaded => nothing to do
+        if self.is_downloaded(&folder) {
+            if let Some(size) = self.downloaded_size() {
+                tracing::info!("All diff segments are already downloaded, reporting full progress");
+                (progress)(size, size);
+            }
+            return Ok(());
+        }
+
+        let (uris, downloaded_size) = match self {
+            // Can't be downloaded
+            Self::Latest { .. } => return Err(Self::Error::AlreadyLatest),
+            Self::Outdated { .. } => return Err(Self::Error::Outdated),
+
+            // Can be downloaded
+            Self::Predownload { uris, downloaded_size, .. }
+            | Self::Diff { uris, downloaded_size, .. } => (uris, *downloaded_size),
+
+            // Can be installed but requires install_to logic
+            Self::NotInstalled { .. } => return Err(Self::Error::MultipleSegments)
+        };
+
+        let folder = folder.as_ref().to_path_buf();
+
+        // The progress callback is used from multiple segment downloads,
+        // so it needs to be shared between them
+        let progress = std::sync::Arc::new(std::sync::Mutex::new(progress));
+
+        let mut current_downloaded = 0;
+
+        for uri in uris {
+            let mut downloader = Downloader::new(uri)?
+                // Continue downloading from where we left off (resume support)
+                .with_continue_downloading(true);
+
+            let segment_name = downloader.get_filename().to_string();
+
+            // Skip segments that are already fully downloaded
+            let target = folder.join(&segment_name);
+
+            // Migrate files saved with old names (before query parameters
+            // were stripped from the filename) so their downloads can resume
+            // instead of starting over
+            migrate_legacy_segment(&folder, &segment_name);
+
+            if is_segment_downloaded(&downloader, &target) {
+                tracing::info!("Segment already downloaded, skipping: {segment_name}");
+                current_downloaded += downloader.length().unwrap_or(0);
+                (progress.lock().unwrap())(current_downloaded, downloaded_size);
+                continue;
+            }
+
+            let local_total = downloader.length().unwrap_or(0);
+
+            let progress = std::sync::Arc::clone(&progress);
+
+            downloader.download(&target, move |curr, _| {
+                (progress.lock().unwrap())(current_downloaded + curr, downloaded_size);
+            })?;
+
+            current_downloaded += local_total;
+        }
+
+        // Report 100% download progress (just in case)
+        (progress.lock().unwrap())(downloaded_size, downloaded_size);
+
+        Ok(())
+    }
+
     fn edition(&self) -> GameEdition {
         match self {
             Self::Latest {
@@ -994,4 +1102,43 @@ fn check_md5(path: &Path, expected: &str) -> bool {
     let digest = hasher.finalize();
 
     format!("{digest:x}") == expected.to_ascii_lowercase()
+}
+
+/// Check whether the segment file is already fully downloaded
+///
+/// Compares the local file size against the remote content length
+/// (used for resume support: partially downloaded segments are re-downloaded
+/// from where they left off by `Downloader`).
+#[cfg(feature = "install")]
+fn is_segment_downloaded(downloader: &Downloader, target: &Path) -> bool {
+    let Some(length) = downloader.length() else {
+        return target.exists();
+    };
+
+    target.metadata().map(|meta| meta.len() >= length).unwrap_or(false)
+}
+
+/// Rename a segment file that was previously saved with URL query
+/// parameters in its name (e.g. `file.zip.001?auth_key=...`) to the clean
+/// filename, so resume logic can find it
+#[cfg(feature = "install")]
+fn migrate_legacy_segment(folder: &Path, clean_name: &str) {
+    let _ = std::fs::read_dir(folder).map(|entries| {
+        for entry in entries.flatten() {
+            let name = entry.file_name().to_string_lossy().to_string();
+
+            // Match the clean name followed by `?` (query parameters)
+            if name.starts_with(clean_name) && name.len() > clean_name.len() {
+                let legacy = entry.path();
+                let target = folder.join(clean_name);
+
+                tracing::info!("Migrating legacy segment filename: {name}");
+
+                #[allow(unused_must_use)]
+                {
+                    std::fs::rename(&legacy, &target);
+                }
+            }
+        }
+    });
 }

@@ -50,22 +50,44 @@ pub trait VersionDiffExt {
     /// - `https://example.com/` -> `index.html`
     /// - `https://example.com` -> `index.html`
     /// 
+    /// URL query parameters (e.g. `?auth_key=...`) are stripped.
+    /// 
     /// Return `None` if the URI is not provided
     fn file_name(&self) -> Option<String> {
         self.downloading_uri().map(|uri| {
-            let Some(index) = uri.replace('\\', "/").rfind('/') else {
+            let uri = uri.replace('\\', "/");
+
+            let Some(index) = uri.rfind('/') else {
                 return String::from("index.html");
             };
 
-            let file = &uri[index + 1..];
+            // Strip query parameters (e.g. `?auth_key=...`)
+            let file = uri[index + 1..].split('?').next().unwrap_or_default();
 
-            file.is_empty()
-                .then(|| String::from("index.html"))
-                .unwrap_or_else(|| String::from(file))
+            if file.is_empty() {
+                String::from("index.html")
+            } else {
+                String::from(file)
+            }
         })
     }
 
     // TODO: think about async
+
+    /// Check whether the diff's downloading file is already fully downloaded
+    /// into the given folder
+    ///
+    /// Used to determine whether the download can be skipped (e.g. for
+    /// predownloads). By default checks the single file from `file_name`;
+    /// games with multiple segments should override this.
+    #[cfg(feature = "install")]
+    fn is_downloaded(&self, folder: impl AsRef<Path>) -> bool {
+        let Some(filename) = self.file_name() else {
+            return false;
+        };
+
+        folder.as_ref().join(filename).metadata().is_ok()
+    }
 
     #[cfg(feature = "install")]
     /// Try to download the diff into the specified folder,

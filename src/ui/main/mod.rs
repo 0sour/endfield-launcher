@@ -368,9 +368,8 @@ impl SimpleComponent for App {
                                                     let config = Config::get().unwrap();
                                                     let temp = config.launcher.temp.unwrap_or_else(std::env::temp_dir);
 
-                                                    let downloaded = temp.join(game.file_name().unwrap()).metadata()
-                                                        .map(|metadata| Some(metadata.len()) >= game.downloaded_size())
-                                                        .unwrap_or(false);
+                                                    // All segments must be downloaded, not just the first one
+                                                    let downloaded = game.is_downloaded(&temp);
 
                                                     !downloaded
                                                 }
@@ -384,9 +383,7 @@ impl SimpleComponent for App {
                                                     let config = Config::get().unwrap();
                                                     let temp = config.launcher.temp.unwrap_or_else(std::env::temp_dir);
 
-                                                    let downloaded = temp.join(game.file_name().unwrap()).metadata()
-                                                        .map(|metadata| Some(metadata.len()) >= game.downloaded_size())
-                                                        .unwrap_or(false);
+                                                    let downloaded = game.is_downloaded(&temp);
 
                                                     if downloaded {
                                                         &["success", "circular"]
