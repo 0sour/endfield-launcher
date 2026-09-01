@@ -2,7 +2,7 @@
 # Contributor: 0sour <0sour@users.noreply.github.com>
 
 pkgname=endfield-launcher
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="Endfield CN launcher for Linux (unofficial)"
 arch=('x86_64')

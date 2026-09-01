@@ -9,5 +9,8 @@ anime-launcher-sdk/target
 # 参考项目（浅克隆，含嵌套 .git）
 /参考
 
+# 内部交接文档
+交接文档-arknights.md
+
 flamegraph.svg
 perf.data*
