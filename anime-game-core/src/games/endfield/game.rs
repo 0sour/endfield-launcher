@@ -209,23 +209,30 @@ impl Game {
 
                 // Check if there's an incremental patch for the current version
                 if let Some(patch) = response.patch {
-                    if let Some(patch_version) = patch.version.as_deref().map(Version::from_str).flatten() {
-                        if patch_version == current {
-                            let (downloaded_size, unpacked_size, uris) =
-                                patch_sizes(&patch);
+                    // The API doesn't include a version field in the patch
+                    // object; a non-empty patches list means the patch
+                    // applies to the currently installed version (the API
+                    // only returns it for the version we requested)
+                    if patch
+                        .patches
+                        .as_ref()
+                        .map(|patches| !patches.is_empty())
+                        .unwrap_or(false)
+                    {
+                        let (downloaded_size, unpacked_size, uris) =
+                            patch_sizes(&patch);
 
-                            return Ok(VersionDiff::Diff {
-                                current,
-                                latest: latest_version,
-                                uris,
-                                edition: self.edition,
-                                downloaded_size,
-                                unpacked_size,
-                                installation_path: Some(self.path.clone()),
-                                version_file_path: None,
-                                temp_folder: None
-                            });
-                        }
+                        return Ok(VersionDiff::Diff {
+                            current,
+                            latest: latest_version,
+                            uris,
+                            edition: self.edition,
+                            downloaded_size,
+                            unpacked_size,
+                            installation_path: Some(self.path.clone()),
+                            version_file_path: None,
+                            temp_folder: None
+                        });
                     }
                 }
 
