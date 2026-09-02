@@ -980,6 +980,34 @@ fn apply_delta_patches(
         None
     };
 
+    // The update package extracts into the game root with this layout:
+    //
+    // ```
+    // vfs_files/
+    // ├── files/Endfield_Data/...          <- static files (local_path)
+    // └── vfs_patch/diff_<ver>/...         <- hdiff patches (patch)
+    // ```
+    //
+    // The manifest paths are relative to the package root: `local_path`
+    // entries already include the `vfs_files/` prefix, while `patch` paths
+    // are bare (`diff_<ver>/...`) and live under `vfs_files/vfs_patch/`.
+    let package_root = path.join("vfs_files");
+    let patch_root = package_root.join("vfs_patch");
+
+    let resolve_package_path = |relative: &str| -> PathBuf {
+        let candidate = path.join(relative);
+
+        if candidate.exists() {
+            candidate
+        }
+        else if relative.starts_with("diff_") {
+            patch_root.join(relative)
+        }
+        else {
+            package_root.join(relative)
+        }
+    };
+
     let Some(manifest) = manifest else {
         tracing::debug!("No patch.json found, assuming static-only delta update");
 
@@ -1022,7 +1050,7 @@ fn apply_delta_patches(
 
         // Case 1: static copy from the extracted package
         if let Some(local_path) = &file_node.local_path {
-            let source_file = path.join(local_path);
+            let source_file = resolve_package_path(local_path);
 
             if !source_file.exists() {
                 tracing::warn!("local_path missing: {local_path}");
@@ -1066,7 +1094,7 @@ fn apply_delta_patches(
                 };
 
                 let base_file_path = source_vfs_base.join(base_file);
-                let diff_file_path = path.join(patch_path);
+                let diff_file_path = resolve_package_path(patch_path);
 
                 if !base_file_path.exists() {
                     tracing::warn!("base file missing: {base_file}");
