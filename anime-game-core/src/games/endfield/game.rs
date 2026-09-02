@@ -162,7 +162,8 @@ impl Game {
                             segments_uris: Vec::new(),
                             installation_path: Some(self.path.clone()),
                             version_file_path: None,
-                            temp_folder: None
+                            temp_folder: None,
+                            password: None
                         });
                     }
 
@@ -189,7 +190,8 @@ impl Game {
                                 unpacked_size,
                                 installation_path: Some(self.path.clone()),
                                 version_file_path: None,
-                                temp_folder: None
+                                temp_folder: None,
+                                password: pre_patch.cd_key.clone()
                             });
                         }
                     }
@@ -231,7 +233,8 @@ impl Game {
                             unpacked_size,
                             installation_path: Some(self.path.clone()),
                             version_file_path: None,
-                            temp_folder: None
+                            temp_folder: None,
+                            password: patch.cd_key.clone()
                         });
                     }
                 }
@@ -270,7 +273,9 @@ impl Game {
                 segments_uris: uris,
                 installation_path: Some(self.path.clone()),
                 version_file_path: None,
-                temp_folder: None
+                temp_folder: None,
+                // Full packages are not encrypted (only incremental patches are)
+                password: None
             })
         }
     }

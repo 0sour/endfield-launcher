@@ -95,7 +95,10 @@ pub enum VersionDiff {
 
         installation_path: Option<PathBuf>,
         version_file_path: Option<PathBuf>,
-        temp_folder: Option<PathBuf>
+        temp_folder: Option<PathBuf>,
+
+        /// Password for the encrypted update archives (from the API's `cd_key`)
+        password: Option<String>
     },
 
     /// Component should be updated before using it
@@ -111,7 +114,10 @@ pub enum VersionDiff {
 
         installation_path: Option<PathBuf>,
         version_file_path: Option<PathBuf>,
-        temp_folder: Option<PathBuf>
+        temp_folder: Option<PathBuf>,
+
+        /// Password for the encrypted update archives (from the API's `cd_key`)
+        password: Option<String>
     },
 
     /// Difference can't be calculated because installed version is too old
@@ -132,11 +138,29 @@ pub enum VersionDiff {
 
         installation_path: Option<PathBuf>,
         version_file_path: Option<PathBuf>,
-        temp_folder: Option<PathBuf>
+        temp_folder: Option<PathBuf>,
+
+        /// Password for the encrypted install archives (from the API's `cd_key`)
+        password: Option<String>
     }
 }
 
 impl VersionDiff {
+    /// Get the password for the encrypted update archives
+    ///
+    /// Return `None` if the archives are not encrypted
+    pub fn password(&self) -> Option<String> {
+        match self {
+            // Can't be installed
+            Self::Latest { .. } | Self::Outdated { .. } => None,
+
+            // Can be installed
+            Self::Predownload { password, .. }
+            | Self::Diff { password, .. }
+            | Self::NotInstalled { password, .. } => password.to_owned()
+        }
+    }
+
     /// Get `.version` file path
     pub fn version_file_path(&self) -> Option<PathBuf> {
         match self {
@@ -539,6 +563,8 @@ impl VersionDiffExt for VersionDiff {
     ) -> Result<(), Self::Error> {
         tracing::debug!("Installing version difference");
 
+        let password = self.password();
+
         let uris = match self {
             // Can't be installed
             Self::Latest {
@@ -683,7 +709,10 @@ impl VersionDiffExt for VersionDiff {
         }
 
         // Extract downloaded segments
-        match Archive::open(temp_folder.join(&first_segment_name)) {
+        match Archive::open_with_password(
+            temp_folder.join(&first_segment_name),
+            self.password().as_deref()
+        ) {
             Ok(mut archive) => {
                 // Temporary workaround as we can't get archive extraction process
                 // directly - we'll spawn it in another thread and check this archive entries
@@ -795,7 +824,10 @@ impl VersionDiffExt for VersionDiff {
 
                     // We have to create new instance of Archive here
                     // because otherwise it may not work after get_entries method call
-                    match Archive::open(extract_from.join(first_segment_name)) {
+                    match Archive::open_with_password(
+                        extract_from.join(first_segment_name),
+                        password.as_deref()
+                    ) {
                         Ok(mut archive) => match archive.extract(&extract_to) {
                             Ok(_) => {
                                 // Verify that the extraction actually produced files:

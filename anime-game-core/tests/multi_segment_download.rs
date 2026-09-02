@@ -109,7 +109,8 @@ fn make_predownload(
         unpacked_size: downloaded_size,
         installation_path: None,
         version_file_path: None,
-        temp_folder: None
+        temp_folder: None,
+        password: None
     }
 }
 
