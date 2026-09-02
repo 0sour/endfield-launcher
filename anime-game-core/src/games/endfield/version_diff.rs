@@ -694,6 +694,14 @@ impl VersionDiffExt for VersionDiff {
                     .get_entries()
                     .expect("Failed to get archive entries");
 
+                // Snapshot the entry names before `entries` is moved into
+                // the progress-polling thread; used to verify that the
+                // extraction actually produced files
+                let entry_names = entries
+                    .iter()
+                    .map(|entry| entry.name.clone())
+                    .collect::<Vec<_>>();
+
                 for entry in &entries {
                     total += entry.size.get_size();
 
@@ -733,6 +741,12 @@ impl VersionDiffExt for VersionDiff {
 
                     let mut unpacked = 0;
 
+                    // Give up after 30 minutes: a failed extraction would
+                    // otherwise make this thread (and the whole update)
+                    // hang forever waiting for files that never appear
+                    let deadline = std::time::Instant::now()
+                        + std::time::Duration::from_secs(30 * 60);
+
                     loop {
                         std::thread::sleep(std::time::Duration::from_millis(250));
 
@@ -757,12 +771,21 @@ impl VersionDiffExt for VersionDiff {
                         if empty {
                             break;
                         }
+
+                        if std::time::Instant::now() > deadline {
+                            tracing::error!(
+                                "Extraction progress polling timed out after 30 minutes"
+                            );
+
+                            break;
+                        }
                     }
                 });
 
                 let unpacking_updater = updater.clone();
                 let extract_to = path.clone();
                 let extract_from = temp_folder.clone();
+                let entry_names = entry_names.clone();
 
                 // Run archive extraction in another thread to not to freeze the current one
                 let handle_1 = std::thread::spawn(move || {
@@ -775,7 +798,26 @@ impl VersionDiffExt for VersionDiff {
                     match Archive::open(extract_from.join(first_segment_name)) {
                         Ok(mut archive) => match archive.extract(&extract_to) {
                             Ok(_) => {
-                                // TODO error handling
+                                // Verify that the extraction actually produced files:
+                                // a failed 7z run used to be reported as success,
+                                // which then deleted the segments for nothing
+                                let extracted = entry_names
+                                    .iter()
+                                    .filter(|name| extract_to.join(name).exists())
+                                    .count();
+
+                                if extracted == 0 {
+                                    (unpacking_updater)(DiffUpdate::InstallerUpdate(
+                                        InstallerUpdate::UnpackingError(
+                                            "Extraction finished but no files were produced".to_string()
+                                        )
+                                    ));
+
+                                    return;
+                                }
+
+                                // Only delete the downloaded segments after a
+                                // successful extraction
                                 #[allow(unused_must_use)]
                                 {
                                     for name in segments_names {

@@ -308,7 +308,17 @@ impl Archive {
                     extract_cmd.arg(format!("-p{password}"));
                 }
 
-                extract_cmd.output()?;
+                let output = extract_cmd.output()?;
+
+                // 7z returns a non-zero exit code on failure; ignoring it
+                // here used to make the caller delete the downloaded
+                // segments even though the extraction never happened
+                if !output.status.success() {
+                    return Err(anyhow::anyhow!(
+                        "Failed to extract archive: {}",
+                        String::from_utf8_lossy(&output.stderr).trim()
+                    ));
+                }
 
                 // Change permissions again
                 Command::new("chmod")
